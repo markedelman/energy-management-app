@@ -39,7 +39,7 @@ mongoose.connection.once('open', ()=> {
 
 // creating a new record in the above DB & Collections
 var entry = new Energy({
-    userValue: 10
+    userValue: 7
 });
 
 // saving the new instance to MongoDB
@@ -60,7 +60,7 @@ app.use(morgan('common'));
 
 
 app.get('/energy', (req, res) => {
-res.json('hello');
+res.json(entry.userValue);
 });
 
 
