@@ -1,8 +1,8 @@
 // import 'babel-polyfill';
 require('babel-polyfill');
 import express from 'express';
-// import mongoose from 'mongoose';
-var mongoose  = require('mongoose');
+import mongoose from 'mongoose';
+// var mongoose  = require('mongoose');
 
 const HOST = process.env.HOST;
 const PORT = process.env.PORT || 8080;
@@ -49,6 +49,20 @@ entry.save().then((resp) => {
 
 
 app.use(express.static(process.env.CLIENT_PATH));
+
+// endpoints
+// get endpoint
+import morgan from 'morgan';
+import bodyParser from 'body-parser';
+const jsonParser = bodyParser.json();
+app.use(morgan('common'));
+
+
+
+app.get('/energy', (req, res) => {
+res.json('hello');
+});
+
 
 
 function runServer() {
