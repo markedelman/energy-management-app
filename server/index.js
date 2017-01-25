@@ -43,9 +43,9 @@ var entry = new Energy({
 });
 
 // saving the new instance to MongoDB
-entry.save().then((resp) => {
-    console.log(resp)
-});
+// entry.save().then((resp) => {
+//     console.log(resp)
+// });
 
 
 app.use(express.static(process.env.CLIENT_PATH));
@@ -60,7 +60,19 @@ app.use(morgan('common'));
 
 
 app.get('/energy', (req, res) => {
-res.json(entry.userValue);
+// res.json(entry.userValue);
+    Energy
+        .find()
+        .lean()
+        .exec((err, data)=>{
+            if(err) {
+                return res.status(500).json({
+                    message: 'Internal Server Error'
+                })
+            } else {
+                res.json(data)
+            }
+        });
 });
 
 
