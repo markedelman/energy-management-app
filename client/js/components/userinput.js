@@ -1,17 +1,43 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 
-var UserInput = React.createClass({
+class UserInput extends React.Component {
+ constructor(props) {
+    super(props);
+    this.buttonClicked = this.buttonClicked.bind(this);
+  }
 
-    render:function(){
+   buttonClicked() {
+	   var inputText= ReactDOM.findDOMNode(this.refs.textInput).value;
+	   var url ='/energy';
+		 fetch(url, {
+            body: JSON.stringify({entry:inputText}),
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			}
+		}).then((response) => {
+			if (response.status < 200) {
+				let error = new Error(response.statusText);
+				error.response = response;
+				throw error;
+			}
+		}).catch((err) => {
+			console.log(err);
+		});
+   }
+
+    render(){
         return (
             <div className="userinput">
                 <h3>User Input:</h3>
-                <textarea ref="userinput_data" defaultValue="Enter Data"></textarea>
-                <button className="btn-info btn-lg">Submit</button>
-            </div>
+				<input type="text" ref="textInput" />
+               <input type="button" value="Focus the text input" onClick={this.buttonClicked} />
+			</div>
         )
     }
-});
+};
 
 // to use the value from the textarea through ref, we do the following:
 // {this.refs.userinput_data.value}

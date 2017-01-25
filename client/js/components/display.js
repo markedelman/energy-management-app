@@ -1,7 +1,7 @@
 import React from 'react';
 require('isomorphic-fetch');
 
-var url = 'http://localhost:8080/energy';
+var url = '/energy';
 
 var stateData=[];
 
