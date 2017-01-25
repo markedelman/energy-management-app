@@ -31,51 +31,62 @@ var Energy = mongoose.model('energyRecord', EnergySchema);
 
 // Connection to MongoDB through Mongoose
 mongoose.connect('mongodb://localhost/energyManagement');
-mongoose.connection.once('open', ()=> {
-    console.log('Connection is Open')
-}).on('error', () => {
-    console.log('Error in Connection')
-});
+mongoose
+    .connection
+    .once('open', () => {
+        console.log('Connection is Open')
+    })
+    .on('error', () => {
+        console.log('Error in Connection')
+    });
 
 // creating a new record in the above DB & Collections
-var entry = new Energy({
-    userValue: 7
-});
+var entry = new Energy({userValue: 7});
 
-// saving the new instance to MongoDB
-// entry.save().then((resp) => {
-//     console.log(resp)
-// });
-
+// saving the new instance to MongoDB entry.save().then((resp) => {
+// console.log(resp) });
 
 app.use(express.static(process.env.CLIENT_PATH));
+app.use(bodyParser.json());
 
-// endpoints
-// get endpoint
+// endpoints get endpoint
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
 const jsonParser = bodyParser.json();
 app.use(morgan('common'));
 
-
-
 app.get('/energy', (req, res) => {
-// res.json(entry.userValue);
+    // res.json(entry.userValue);
     Energy
         .find()
         .lean()
-        .exec((err, data)=>{
-            if(err) {
-                return res.status(500).json({
-                    message: 'Internal Server Error'
-                })
+        .exec((err, data) => {
+            if (err) {
+                return res
+                    .status(500)
+                    .json({message: 'Internal Server Error'})
             } else {
                 res.json(data)
             }
         });
 });
 
-
+app.post('/energy', (req, res) => {
+    Energy.create({
+        // either from 'entry' or from user 'submit'
+        userValue: req.body.entry
+        // 10
+    }, (err, input) => {
+        if (err) {
+            console.log(err)
+            return res
+            
+                .status(500)
+                .json({message: 'Internal Server Error'});
+        }
+        res.status(201).json(input);
+    });
+});
 
 function runServer() {
     return new Promise((resolve, reject) => {
