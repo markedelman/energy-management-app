@@ -1,23 +1,32 @@
 import React from 'react';
 require('isomorphic-fetch');
+import { connect } from 'react-redux';
 
-var url = '/energy';
+// var url = '/energy';
 
-var stateData=[];
+// var stateData=[];
 
-fetch(url).then(res => res.json()).then(data => stateData = data);
+// fetch(url).then(res => res.json()).then(data => stateData = data);
 
 var Display = React.createClass({
-    getInitialState:function(){
-        return {
-            data: stateData
-        }
-    },
+    // getInitialState:function(){
+    //     return {
+    //         data: stateData
+    //     }
+    // },
 
-    createList:function(){
-        return stateData.map((list)=>{
+    // createList:function(){
+    //     return stateData.map((list)=>{
+    //         return (
+    //             <li key={list._id}>{list.userValue} {list.time}</li>
+    //         );
+    //     });
+    // },
+
+    createRedux:function(){
+        return this.props.energyData.map((element)=>{
             return (
-                <li key={list._id}>{list.userValue} {list.time}</li>
+                <li key={element._id}>{element.userValue} {element.time}</li>
             );
         });
     },
@@ -32,7 +41,7 @@ var Display = React.createClass({
 
        return (
            <div className="energylist">
-                <ul>{this.createList()}</ul>
+                <ul>{this.createRedux()}</ul>
            </div>
        )
         
@@ -41,4 +50,12 @@ var Display = React.createClass({
 
 });
 
-module.exports = Display;
+function mapStateToProps(state){
+    return {
+        energyData: state.energyData
+    }
+}
+
+export default connect(mapStateToProps)(Display);
+
+// module.exports = Display;

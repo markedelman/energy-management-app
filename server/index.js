@@ -15,16 +15,24 @@ const app = express();
 mongoose.Promise = global.Promise;
 
 // creating the Schema for persistent objects
+var d = new Date();
+var dateString = " => Date: " + (d.getMonth()+1)  + "/" + d.getDate() + "/" + d.getFullYear() + " Time: " +
+d.getHours() + ":" + d.getMinutes();
+
 var EnergySchema = mongoose.Schema({
     userValue: {
         type: String,
         required: true
     },
     time: {
-        type: Date,
-        default: Date.now
+        // type: Date,
+        // default: Date.now
+        type: String,
+        default: dateString
     }
 });
+
+
 
 // creating Model for Mongo to store documents according to the Schema
 var Energy = mongoose.model('energyRecord', EnergySchema);
