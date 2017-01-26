@@ -17,7 +17,7 @@ mongoose.Promise = global.Promise;
 // creating the Schema for persistent objects
 var EnergySchema = mongoose.Schema({
     userValue: {
-        type: Number,
+        type: String,
         required: true
     },
     time: {

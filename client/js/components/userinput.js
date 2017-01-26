@@ -10,6 +10,7 @@ class UserInput extends React.Component {
    buttonClicked() {
 	   var inputText= ReactDOM.findDOMNode(this.refs.textInput).value;
 	   var url ='/energy';
+		 this.refs.textInput.value = '';
 		 fetch(url, {
             body: JSON.stringify({entry:inputText}),
 			method: 'POST',
@@ -17,12 +18,15 @@ class UserInput extends React.Component {
 				Accept: 'application/json',
 				'Content-Type': 'application/json'
 			}
+			 
 		}).then((response) => {
+			
 			if (response.status < 200) {
 				let error = new Error(response.statusText);
 				error.response = response;
 				throw error;
 			}
+			
 		}).catch((err) => {
 			console.log(err);
 		});
@@ -33,7 +37,7 @@ class UserInput extends React.Component {
             <div className="userinput">
                 <h3>User Input:</h3>
 				<input type="text" ref="textInput" />
-               <input type="button" value="Focus the text input" onClick={this.buttonClicked} />
+               <input type="button" value="Add Entry" onClick={this.buttonClicked /* this.refs.userinput_data.value = ''*/} />
 			</div>
         )
     }
